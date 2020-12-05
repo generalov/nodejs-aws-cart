@@ -24,7 +24,7 @@ RUN find . -name '.gitignore' \
     -o -name '*.map' \
     -o -name '.*.yml' \
     -o -name '.*.json' \
-    -o -name '*.d.ts' \
+    -o -name '*.ts' \
     -o -name '@types' \
     -o -name '.npm*' \
     -o -name '.eslint*' \
