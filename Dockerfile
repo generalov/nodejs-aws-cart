@@ -20,12 +20,24 @@ COPY --from=development /app/dist ./dist
 RUN find . -name '.gitignore' \
     -o -name LICENSE \
     -o -name '*.md' \
-    -o -name '*.d.ts' \
+    -o -name '*.txt' \
     -o -name '*.map' \
     -o -name '.*.yml' \
-    -o -name '*.{test|spec}.*' \
-    -o -name '{test|tests}' \
+    -o -name '.*.json' \
+    -o -name '*.d.ts' \
+    -o -name '@types' \
+    -o -name '.npm*' \
+    -o -name '.eslint*' \
+    -o -name 'Makefile' \
+    -o -name 'karma.*' \
+    -o -name '*.spec.*' \
+    -o -name '*.test.*' \
+    -o -name 'test' \
+    -o -name 'tests' \
     -o -name '__*__' \
+    -o -path '*/rxjs/_*' \
+    -o -path '*/rxjs/src/*' \
+    -o -path '*/rxjs/testing/*' \
     | xargs -n1 rm -rf \
     && mkdir /app/build && mv package.json dist node_modules /app/build
 
