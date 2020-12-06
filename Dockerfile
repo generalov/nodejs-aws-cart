@@ -13,7 +13,7 @@ RUN yarn build
 ########################################
 ## Build
 ########################################
-FROM node:12.20.0-alpine3.12 as build
+FROM node:12.20.0-alpine3.10 as build
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /app
@@ -47,7 +47,7 @@ RUN find . -name '.gitignore' \
 ########################################
 ## Tiny NodeJS
 ########################################
-FROM alpine:3.12 as node-tiny
+FROM alpine:3.10 as node-tiny
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 ENV NODE_VERSION 12.20.0
