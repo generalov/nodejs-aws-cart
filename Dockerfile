@@ -1,7 +1,7 @@
 ########################################
 ## Development
 ########################################
-FROM node:12.13-buster as development
+FROM node:12.20-buster as development
 ENV NODE_ENV=development
 WORKDIR /app
 COPY package.json ./
@@ -42,7 +42,8 @@ RUN find . -name '.gitignore' \
     -o -path '*/rxjs/src/*' \
     -o -path '*/rxjs/testing/*' \
     | xargs -n1 rm -rf \
-    && mkdir /app/build && mv package.json dist node_modules /app/build
+    && mkdir /app/build \
+    && mv package.json dist node_modules /app/build
 
 ########################################
 ## Tiny NodeJS
@@ -53,7 +54,7 @@ ENV NODE_VERSION 12.20.0
 RUN addgroup -g 1000 node \
     && adduser -u 1000 -G node -s /bin/sh -D node \
     && apk add --no-cache libstdc++
-COPY --from=node:12.20.0-alpine3.12 /usr/local/bin/docker-entrypoint.sh /usr/local/bin/node /usr/local/bin/
+COPY --from=node:12.20.0-alpine3.10 /usr/local/bin/docker-entrypoint.sh /usr/local/bin/node /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 ########################################
