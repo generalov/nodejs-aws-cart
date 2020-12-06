@@ -14,8 +14,7 @@ RUN yarn build
 ## Build
 ########################################
 FROM node:12.20.0-alpine3.10 as build
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
+ENV NODE_ENV=production
 WORKDIR /app
 COPY package*.json ./
 RUN npm install --only=production
@@ -28,6 +27,7 @@ RUN find . -name '.gitignore' \
     -o -name '.*.yml' \
     -o -name '.*.json' \
     -o -name '*.ts' \
+    -o -name '*.tsbuildinfo' \
     -o -name '@types' \
     -o -name '.npm*' \
     -o -name '.eslint*' \
@@ -48,8 +48,7 @@ RUN find . -name '.gitignore' \
 ## Tiny NodeJS
 ########################################
 FROM alpine:3.10 as node-tiny
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
+ENV NODE_ENV=production
 ENV NODE_VERSION 12.20.0
 RUN addgroup -g 1000 node \
     && adduser -u 1000 -G node -s /bin/sh -D node \
