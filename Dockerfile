@@ -55,6 +55,7 @@ ENV NODE_ENV=production
 ENV NODE_VERSION 12.20.0
 RUN addgroup -g 1000 node \
     && adduser -u 1000 -G node -s /bin/sh -D node \
+    && rm -f /etc/*- \
     && apk add --no-cache libstdc++
 COPY --from=build /usr/local/bin/docker-entrypoint.sh /usr/local/bin/node /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
