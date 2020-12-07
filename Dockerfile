@@ -4,8 +4,7 @@
 FROM node:12.20-buster as development
 ENV NODE_ENV=development
 WORKDIR /app
-COPY package.json ./
-COPY yarn.lock ./
+COPY package.json yarn.lock ./
 RUN yarn --dev install
 COPY . .
 RUN yarn build
@@ -13,11 +12,14 @@ RUN yarn build
 ########################################
 ## Build
 ########################################
-FROM node:12.20.0-alpine3.10 as build
+FROM node:12.20.0-alpine3.9 as build
+RUN apk upgrade --no-cache -U && \
+  apk add --no-cache binutils libstdc++ && \
+  strip /usr/local/bin/node
 ENV NODE_ENV=production
 WORKDIR /app
-COPY package*.json ./
-RUN npm install --only=production
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 COPY --from=development /app/dist ./dist
 RUN find . -name '.gitignore' \
     -o -name LICENSE \
@@ -48,13 +50,13 @@ RUN find . -name '.gitignore' \
 ########################################
 ## Tiny NodeJS
 ########################################
-FROM alpine:3.10 as node-tiny
+FROM alpine:3.9 as node-tiny
 ENV NODE_ENV=production
 ENV NODE_VERSION 12.20.0
 RUN addgroup -g 1000 node \
     && adduser -u 1000 -G node -s /bin/sh -D node \
     && apk add --no-cache libstdc++
-COPY --from=node:12.20.0-alpine3.10 /usr/local/bin/docker-entrypoint.sh /usr/local/bin/node /usr/local/bin/
+COPY --from=build /usr/local/bin/docker-entrypoint.sh /usr/local/bin/node /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 ########################################
