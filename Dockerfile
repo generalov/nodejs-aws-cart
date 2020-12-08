@@ -13,8 +13,7 @@ RUN yarn build
 ## Build
 ########################################
 FROM node:12.20.0-alpine3.9 as build
-RUN apk upgrade --no-cache -U && \
-  apk add --no-cache binutils libstdc++ && \
+RUN apk add --no-cache binutils && \
   strip /usr/local/bin/node
 ENV NODE_ENV=production
 WORKDIR /app
