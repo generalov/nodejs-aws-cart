@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  api:
+    container_name: cart-api
+    build:
+      context: .
+      target: development
+    command: npm run start:dev
+    environment:
+      - PORT=8080
+    ports:
+      - ${CART_API_PORT:-8080}:8080
+    volumes:
+      - .:/app
+      - /app/node_modules
